@@ -2,8 +2,8 @@
 # Configs
 /config/db.js
 
-# File upload
-/uploads
+# Mac
+.DS_Store
 
 # Logs
 logs

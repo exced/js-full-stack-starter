@@ -33,9 +33,6 @@ export default class Folder {
     if (!user) {
       throw new AuthRequired()
     }
-    if (this.findOneById(id).userId !== user._id) {
-      throw new UserNotAllowed()
-    }
     this.collection.update({ _id: id }, {
       $set: {
         ...doc,
@@ -48,17 +45,22 @@ export default class Folder {
     return file
   }
 
+  cascadeRemove = (id) => {
+    const file = this.collection.remove({ _id: id })
+    this.loader.clear(id)
+    this.collection
+      .find({ parent: id })
+      .forEach(doc => this.cascadeRemove(doc._id))
+  }
+
   removeById = (id, user) => {
     if (!user) {
       throw new AuthRequired()
     }
-    if (this.findOneById(id).userId !== user._id) {
-      throw new UserNotAllowed()
-    }
-    const file = this.collection.remove({ _id: id })
+    const file = this.cascadeRemove(id)
     this.loader.clear(id)
     pubsub.publish('fileRemoved', id)
-    return file
+    return id
   }
 
 }

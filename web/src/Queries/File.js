@@ -14,9 +14,6 @@ query files($offset: Int, $limit: Int) {
     createdAt
     updatedAt
     parent
-    ... on Folder {
-      children
-    }
     ... on File {
       base64
       mimetype

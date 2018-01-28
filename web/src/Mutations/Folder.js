@@ -36,11 +36,7 @@ export const createFolderMutation = graphql(createFolder, {
   props: ({ ownProps, mutate }) => ({
     onCreateFolder: (input) => mutate({
       variables: { input },
-      update: (store, { data: { createFolder } }) => {
-        const data = store.readQuery({ query: files, variables: { offset: 0, limit: 30 } })
-        const newData = { ...data, files: [...data.files, createFolder] }
-        store.writeQuery({ query: files, variables: { offset: 0, limit: 30 }, data: newData })
-      }
+      refetchQueries: ['files']
     })
   })
 })
@@ -64,13 +60,7 @@ export const removeFolderMutation = graphql(removeFolder, {
   props: ({ ownProps, mutate }) => ({
     onRemoveFolder: (id) => mutate({
       variables: { id },
-      update: (store, { data: { removeFolder } }) => {
-        if (removeFolder) {
-          const data = store.readQuery({ query: files, variables: { offset: 0, limit: 30 } })
-          const newData = { ...data, files: data.files.filter(e => e.id !== removeFolder) }
-          store.writeQuery({ query: files, variables: { offset: 0, limit: 30 }, data: newData })
-        }
-      }
+      refetchQueries: ['files']
     })
   })
 })

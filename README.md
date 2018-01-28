@@ -11,3 +11,8 @@ Web : React, Redux, Redux Saga, Apollo GraphQL...
 - Run both api and server
 - Signup if you don't have an account
 - Use the file system. You can drop files from outside in given column.
+
+## Todo
+- [ ] wev/ && /api/ tests
+- [ ] Docker integration
+- [ ] graphQL subscriptions

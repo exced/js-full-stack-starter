@@ -10,6 +10,10 @@ export const batch = (collection, ids) => (
     })
 )
 
-export const readFileAsyncToBase64 = (path) => (
+export const readFileSyncToBase64 = (path) => (
   fs.readFileSync(path).toString('base64')
+)
+
+export const removeFileAsync = (path) => (
+  fs.unlink(path)
 )

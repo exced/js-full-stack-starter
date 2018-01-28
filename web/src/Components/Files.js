@@ -108,7 +108,7 @@ export default class Files extends Component {
             <div style={{ marginTop: 10 }}>
               <ButtonGroup>
                 <Tooltip title="New folder">
-                  <Button onClick={() => this.onClickAddFolder(item.id)} icon="folder-add" />
+                  <Button onClick={() => this.onAddFolder(item.id)} icon="folder-add" />
                 </Tooltip>
               </ButtonGroup>
             </div>

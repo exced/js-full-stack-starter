@@ -45,9 +45,6 @@ export default class File {
     if (!user) {
       throw new AuthRequired()
     }
-    if (this.findOneById(id).userId !== user._id) {
-      throw new UserNotAllowed()
-    }
     this.collection.update({ _id: id }, {
       $set: {
         ...doc,
@@ -64,13 +61,10 @@ export default class File {
     if (!user) {
       throw new AuthRequired()
     }
-    if (this.findOneById(id).userId !== user._id) {
-      throw new UserNotAllowed()
-    }
     const file = this.collection.remove({ _id: id })
     this.loader.clear(id)
     pubsub.publish('fileRemoved', id)
-    return file
+    return id
   }
 
 }

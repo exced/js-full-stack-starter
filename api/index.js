@@ -101,7 +101,6 @@ const start = async () => {
       if (!user) {
         throw new AuthRequired()
       }
-      console.log(req.body)
       for (let i = 0; i < req.files.length; i++) {
         const e = req.files[i]
         models.File.insert({
@@ -114,6 +113,7 @@ const start = async () => {
         }, user)
       }
     })(req, res, next)
+    res.json({ status: 'done' })
   })
 
   // GraphQL 

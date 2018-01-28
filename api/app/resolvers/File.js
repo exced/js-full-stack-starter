@@ -1,9 +1,9 @@
-import { readFileAsyncToBase64 } from '../models/helpers'
+import { readFileSyncToBase64 } from '../models/helpers'
 
 const resolver = {
   File: {
     id: (file) => file._id,
-    base64: (file) => readFileAsyncToBase64(file.path)
+    base64: (file) => readFileSyncToBase64(file.path)
   },
   Mutation: {
     createFile: (root, { input }, { File, user }) => File.insert(input, user),
