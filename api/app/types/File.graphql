@@ -14,8 +14,8 @@ input FileInput {
 }
 
 type Mutation {
-  createFile(input: FileInput): File
-  updateFile(id: ObjectID!, input: FileInput): File
+  createFile(input: FileInput!): IFile
+  updateFile(id: ObjectID!, input: FileInput!): IFile
   removeFile(id: ObjectID!): ObjectID
 }
 

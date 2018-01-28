@@ -13,6 +13,6 @@ Web : React, Redux, Redux Saga, Apollo GraphQL...
 - Use the file system. You can drop files from outside in given column.
 
 ## Todo
-- [ ] wev/ && /api/ tests
+- [ ] web/ && /api/ tests
 - [ ] Docker integration
 - [ ] graphQL subscriptions

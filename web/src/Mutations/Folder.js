@@ -3,13 +3,17 @@ import { graphql } from 'react-apollo'
 import { files } from '../Queries/File'
 
 export const createFolder = gql`
-mutation createFolder($input: FolderInput) {
+mutation createFolder($input: FolderInput!) {
   createFolder(input: $input) {
     id
     title
     createdAt
     updatedAt
     parent
+    ... on File {
+      base64
+      mimetype
+    }
   }
 }
 `
@@ -22,6 +26,10 @@ mutation updateFolder($id: ObjectID!, $input: FolderInput!) {
     createdAt
     updatedAt
     parent
+    ... on File {
+      base64
+      mimetype
+    }
   }
 }
 `
@@ -36,7 +44,13 @@ export const createFolderMutation = graphql(createFolder, {
   props: ({ ownProps, mutate }) => ({
     onCreateFolder: (input) => mutate({
       variables: { input },
-      refetchQueries: ['files']
+      update: (store, { data: { createFolder } }) => {
+        if (createFolder) {
+          const data = store.readQuery({ query: files, variables: { offset: 0, limit: 30 } })
+          const newData = { ...data, files: [...data.files, createFolder] }
+          store.writeQuery({ query: files, variables: { offset: 0, limit: 30 }, data: newData })
+        }
+      }
     })
   })
 })

@@ -13,8 +13,8 @@ input FolderInput {
 }
 
 type Mutation {
-  createFolder(input: FolderInput): File
-  updateFolder(id: ObjectID!, input: FolderInput): Folder
+  createFolder(input: FolderInput!): IFile
+  updateFolder(id: ObjectID!, input: FolderInput!): IFile
   removeFolder(id: ObjectID!): ObjectID
 }
 

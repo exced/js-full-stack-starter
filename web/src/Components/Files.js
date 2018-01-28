@@ -1,6 +1,6 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Icon, Button, Modal, Tooltip } from 'antd'
+import { Icon, Button, Modal, Tooltip, Spin } from 'antd'
 import FileManager, { Types } from 'react-file-manager'
 import PDFViewer from 'mgr-pdf-viewer-react'
 import TextEdit from './TextEdit'
@@ -30,6 +30,7 @@ export default class Files extends Component {
     super(props)
     this.state = {
       previewModal: null,
+      uploading: false,
     }
     this.api = createAPI(props.token)
   }
@@ -42,8 +43,9 @@ export default class Files extends Component {
 
   }
 
-  onChangeColumn = () => {
-
+  onChangeColumn = (itemId, source, destination) => {
+    const { onUpdateFile, files } = this.props
+    onUpdateFile(itemId, { title: files[itemId].title, parent: destination.droppableId })
   }
 
   onAddFolder = (parent) => {
@@ -71,13 +73,14 @@ export default class Files extends Component {
       for (let i = 0; i < files.length; i++) {
         data.append('files', files[i])
       }
+      this.setState({ uploading: true })
       this.api.upload(data)
         .then(res => {
-          // TODO: anti pattern
-          this.forceUpdate()
+          this.setState({ uploading: false })
+          this.props.refetch()
         })
         .catch(err => {
-          console.log(err)
+          this.setState({ uploading: true })
         })
     }
   }
@@ -163,7 +166,7 @@ export default class Files extends Component {
 
   render() {
 
-    const { previewModal } = this.state
+    const { previewModal, uploading } = this.state
 
     const { files, root } = this.props
 
@@ -178,7 +181,7 @@ export default class Files extends Component {
     }
 
     return (
-      <Fragment>
+      <Spin spinning={uploading}>
         <Modal
           width="80%"
           title="Preview"
@@ -198,7 +201,7 @@ export default class Files extends Component {
           renderItem={this.renderItem}
           renderPreview={this.renderPreview}
         />
-      </Fragment>
+      </Spin>
     )
   }
 }
@@ -207,6 +210,7 @@ Files.propTypes = {
   token: PropTypes.string.isRequired,
   root: PropTypes.object.isRequired,
   files: PropTypes.object.isRequired,
+  refetch: PropTypes.func.isRequired,
   onCreateFolder: PropTypes.func.isRequired,
   onUpdateFolder: PropTypes.func.isRequired,
   onRemoveFolder: PropTypes.func.isRequired,

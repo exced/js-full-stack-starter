@@ -4,14 +4,16 @@ import { files } from '../Queries/File'
 
 export const updateFile = gql`
 mutation updateFile($id: ObjectID!, $input: FileInput!) {
-  updateFolder(id: $id, input: $input) {
+  updateFile(id: $id, input: $input) {
     id
     title
     createdAt
     updatedAt
     parent
-    base64
-    mimetype
+    ... on File {
+      base64
+      mimetype
+    }
   }
 }
 `
