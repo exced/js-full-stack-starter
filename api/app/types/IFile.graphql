@@ -1,0 +1,17 @@
+interface IFile {
+  id: ObjectID!
+  title: String!
+  createdAt: Float!
+  updatedAt: Float!
+  parent: ObjectID
+}
+
+type Query {
+  files(offset: Int, limit: Int): [IFile!]
+  file(id: ObjectID!): IFile!
+}
+
+type Subscription {
+  fileUpdated: IFile
+  fileRemoved: ObjectID
+}

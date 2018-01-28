@@ -1,0 +1,24 @@
+type Folder implements IFile {
+  id: ObjectID!
+  title: String!
+  children: [ObjectID!]
+  createdAt: Float!
+  updatedAt: Float!
+  parent: ObjectID
+}
+
+input FolderInput {
+  title: String!
+  parent: ObjectID!
+}
+
+type Mutation {
+  createFolder(input: FolderInput): File
+  updateFolder(id: ObjectID!, input: FolderInput): Folder
+  removeFolder(id: ObjectID!): ObjectID
+}
+
+type Subscription {
+  folderUpdated: Folder
+  folderRemoved: ObjectID
+}

@@ -1,0 +1,34 @@
+{
+  "presets": [
+    "es2016",
+    "react",
+    "stage-0"
+  ],
+  "plugins": [
+    [
+      "import",
+      {
+        "libraryName": "antd",
+        "libraryDirectory": "es",
+        "style": true
+      }
+    ]
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        "es2016",
+        "react",
+        "stage-0"
+      ],
+      "plugins": [
+        [
+          "import",
+          {
+            "libraryName": "test"
+          }
+        ]
+      ]
+    }
+  }
+}

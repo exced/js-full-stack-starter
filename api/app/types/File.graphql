@@ -1,0 +1,25 @@
+type File implements IFile {
+  id: ObjectID!
+  title: String!
+  createdAt: Float!
+  updatedAt: Float!
+  parent: ObjectID
+  mimetype: String!
+  base64: String!
+}
+
+input FileInput {
+  title: String!
+  parent: ObjectID!
+}
+
+type Mutation {
+  createFile(input: FileInput): File
+  updateFile(id: ObjectID!, input: FileInput): File
+  removeFile(id: ObjectID!): ObjectID
+}
+
+type Subscription {
+  fileUpdated: File
+  fileRemoved: ObjectID
+}
