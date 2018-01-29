@@ -55,14 +55,20 @@ export default class Files extends Component {
   onClickRemoveFolder = (item) => confirm({
     title: "Remove this folder ?",
     content: item.title,
-    onOk: () => this.props.onRemoveFolder(item.id),
+    onOk: () => {
+      this.fileManager.deselect()
+      this.props.onRemoveFolder(item.id)
+    },
     onCancel: () => { },
   })
 
   onClickRemoveFile = (item) => confirm({
     title: "Remove this file ?",
     content: item.title,
-    onOk: () => this.props.onRemoveFile(item.id),
+    onOk: () => {
+      this.fileManager.deselect()
+      this.props.onRemoveFile(item.id)
+    },
     onCancel: () => { },
   })
 
@@ -192,6 +198,7 @@ export default class Files extends Component {
           {previewModal && <FileContentPreview item={previewModal} />}
         </Modal>
         <FileManager
+          ref={ref => this.fileManager = ref}
           map={files}
           onChange={this.onChange}
           onChangeColumn={this.onChangeColumn}
