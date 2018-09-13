@@ -1,6 +1,9 @@
 
 # Configs
-/config/db.js
+node_modules*
+
+# Docker MongoDB
+data
 
 # Mac
 .DS_Store
