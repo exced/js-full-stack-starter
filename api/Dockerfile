@@ -1,33 +1,13 @@
-# DEV BUILD STEP
-FROM node:8.7-alpine as devBuild
+FROM node:latest
+
+RUN mkdir -p /usr/src/app
+
 WORKDIR /usr/src/app
 
-# Copy the source and build
-# Build script uses --dev flag to get the right dependencies
-COPY . .
-RUN yarn run build
+COPY package.json yarn.lock /usr/src/app/
 
-# PROD BUILD STEP
-# Using latest LTS release of Node (comes with Yarn package manager by default)
-FROM node:8.7-alpine
+RUN yarn
 
-# Create an app directory on the container
-WORKDIR /usr/src/app
-ENV NODE_ENV=production
+COPY . /usr/src/app
 
-# Project copy build, install dependencies
-COPY --from=devBuild /usr/src/app/build/app ./build/app
-COPY package.json yarn.lock README.md ./
-RUN yarn install --prod
-
-# Install curl to do healthchecks
-RUN apk add curl --no-cache
-
-# Expose the container port to the OS
-# docker run takes -p argument to forward this port to network
-EXPOSE 8000
-
-# Start the application
-CMD [ "yarn", "start" ]
-
-HEALTHCHECK CMD curl --silent --fail http://localhost:8000/ || exit 1
+EXPOSE 4000

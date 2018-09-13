@@ -1,9 +1,12 @@
 
-# Configs
-/config/db.js
+# Build
+dist/
 
-# File upload
-/uploads
+# Flow typed
+flow-typed/
+
+# Flow coverage
+flow-coverage/
 
 # Logs
 logs

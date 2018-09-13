@@ -1,27 +1,26 @@
-import './Config/Reactotron'
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { ConnectedRouter } from 'react-router-redux'
-import { PersistGate } from 'redux-persist/es/integration/react'
-import { ApolloProvider } from 'react-apollo'
-import registerServiceWorker from './registerServiceWorker'
-import Loading from './Components/Loading'
-import Navigation from './Containers/Navigation'
+/**
+ * @flow
+ */
 
-import { store, persistor, client, history } from './Store'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { ApolloProvider } from 'react-apollo';
+import 'antd/dist/antd.css';
 
-const onBeforeLift = () => {
-  // take some action before the gate lifts
-}
+import './assets/index.css';
+import { createClient } from './services/apolloClient';
+import Navigator from './views/Navigator';
+import registerServiceWorker from './registerServiceWorker';
+
+const apolloClient = createClient();
 
 ReactDOM.render(
-  <ApolloProvider store={store} client={client}>
-    <PersistGate loading={<Loading />} onBeforeLift={onBeforeLift} persistor={persistor}>
-      <ConnectedRouter history={history}>
-        <Navigation />
-      </ConnectedRouter>
-    </PersistGate>
-  </ApolloProvider>,
-  document.querySelector('#root')
-)
-registerServiceWorker()
+	<ApolloProvider client={apolloClient}>
+		<Router>
+			<Navigator />
+		</Router>
+	</ApolloProvider>,
+	document.getElementById('root')
+);
+registerServiceWorker();
