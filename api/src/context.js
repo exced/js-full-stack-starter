@@ -3,21 +3,21 @@
  * @flow
  */
 
-import createMongoConnector from './connectors/mongo';
+
 import { configureModels, configureContainers } from './models';
 import { createPubSub } from './subscription';
 
+import type {Connectors} from './connectors/connectors'
 import type { Config } from './config/config';
 import type { Models } from './models';
 
 export type Context = Models;
 
-export const createContext = (config: Config) => async ({ req }: Object) => {
-  const mongoConnector = await createMongoConnector({ mongo: config.db });
+export const createContext = ({connectors,config}: {connectors: Connectors, config: Config}) => async ({ req }: Object) => {
 
   const models = configureModels({
     connectors: {
-      mongo: mongoConnector
+      mongo: connectors.mongoConnector
     },
     pubsub: createPubSub(),
     guard: config.guard
