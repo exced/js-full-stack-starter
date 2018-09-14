@@ -9,11 +9,11 @@ import type { Config } from '../config/config';
 import type { MongoConnector } from './mongo';
 
 export type Connectors = {
-  mongoConnector: MongoConnector,
+  mongo: MongoConnector
 };
 
 export const createConnectors = async (
   config: Config
 ): Promise<Connectors> => ({
-  mongoConnector: await createMongoConnector({ mongo: config.db }),
+  mongo: await createMongoConnector({ mongo: config.db })
 });

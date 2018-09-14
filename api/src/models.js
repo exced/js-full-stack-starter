@@ -3,21 +3,13 @@
  * @flow
  */
 
+import { createPubSub } from './subscription';
 import createUser from './modules/User/model';
 import createUserContainer from './modules/User/container';
 
-import type { MongoConnector } from './connectors/mongo';
+import type { Config } from './config/config';
+import type { Connectors } from './connectors/connectors';
 import type { UserModel } from './modules/User/model';
-
-type Connectors = {
-  mongo: MongoConnector
-};
-
-type ConfigureModelsContext = {
-  connectors: Connectors,
-  pubsub: any,
-  guard: Object
-};
 
 export type Models = {
   User: UserModel
@@ -27,13 +19,20 @@ export type ModelsContext = {
   models: Models
 };
 
-export const configureModels = (ctx: ConfigureModelsContext): Models => {
-  const { connectors, pubsub, guard } = ctx;
+export const createModels = ({
+  connectors,
+  config
+}: {
+  connectors: Connectors,
+  config: Config
+}): Models => {
+  const pubsub = createPubSub();
+  const guard = config.guard;
   return {
     User: createUser({ pubsub, guard, connector: connectors.mongo })
   };
 };
 
-export const configureContainers = (ctx: Object) => ({
+export const enhanceModels = (ctx: Object) => ({
   User: createUserContainer(ctx)
 });

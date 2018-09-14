@@ -8,16 +8,18 @@ import { ApolloServer, AuthenticationError } from 'apollo-server';
 import config from './config/config';
 import { typeDefs, resolvers, schemaDirectives } from './schema';
 import { createConnectors } from './connectors/connectors';
+import { createModels } from './models';
 import { createContext } from './context';
 
 const listenAndServe = async () => {
   const connectors = await createConnectors(config);
+  const models = createModels({ connectors, config });
 
   const server = new ApolloServer({
     typeDefs,
     resolvers,
     schemaDirectives,
-    context: createContext({ connectors, config }),
+    context: createContext({ models, config }),
     formatError: error => {
       console.error(error);
       return error;
